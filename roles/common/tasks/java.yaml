@@ -1,0 +1,38 @@
+- name: installing maven dependence for java 
+  ansible.builtin.dnf:
+    state: present
+    name: "{{ item }}"
+  loop:
+     - maven
+     - mysql
+
+- name: installing pip libraries to import mysql
+  ansible.builtin.pip:
+   executable: pip3.9
+   name: "{{ item }}"
+  loop:
+   - PyMySQL
+   - cryptography
+
+-  name: installing dependency
+   ansible.builtin.command: mvn clean package 
+   args: 
+      chdir: /app 
+
+- name: move jar file
+  ansible.builtin.command: mv target/shipping-1.0.jar shipping.jar 
+  args: 
+     chdir: /app
+
+- name: import shipping  data to mysql
+  community.mysql.mysql_db:
+        state: import
+        name: all
+        login_host: mysql.daws86s.cfd
+        login_user: root 
+        login_password: RoboShop@1
+        target: "{{ item }}"
+  loop:
+        - /app/db/schema.sql
+        - /app/db/app-user.sql
+        - /app/db/master-data.sql
