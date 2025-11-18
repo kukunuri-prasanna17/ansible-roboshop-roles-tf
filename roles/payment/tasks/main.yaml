@@ -7,7 +7,7 @@
 -  name: upgrading openssl packages
    ansible.builtin.dnf:
       name: "{{ item }}"
-   state: latest
+      state: latest
    loop: 
    - openssl
    - openssl-libs
