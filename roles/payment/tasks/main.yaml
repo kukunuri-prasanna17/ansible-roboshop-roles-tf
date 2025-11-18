@@ -6,7 +6,7 @@
 # change this as part of latest python3-devel from repos have upgraded openssl-libs but other openssl packages are old in AMI , so mismatching before installing python or after     
 -  name: upgrading openssl packages
    ansible.builtin.dnf:
-      name:
+      name: "{{ item }}"
    state: latest
    loop: 
    - openssl
